@@ -23,8 +23,9 @@ A MLP **classifica o risco** (`Nenhum`, `Insônia`, `Apneia do Sono`) com base e
 - **Target**: Distúrbio do sono (3 classes)
 - **Link do daraset**: https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset
 
-### 🛠️ **Ferramenta**
-**Python + scikit-learn** (MLPClassifier)
+### **Ferramenta**
+- **Python**
+- **scikit-learn (MLPClassifier)**
 
 ---
 
@@ -88,27 +89,14 @@ Nenhum | Insônia | Apneia
 
 ---
 
-## 🚀 **Impacto para o Negócio**
+## **Impacto para o Negócio**
 
 ### Para os Usuários
 - **Prevenção personalizada** antes dos sintomas
 - **Mudanças de hábitos orientadas por IA**
 - **Monitoramento contínuo** do progresso
 
-### Para a Empresa Parceira
+### Para a Care Plus
 - **Engajamento** aumentado no app
 - **Valor agregado** com medicina preventiva
 - **Diferencial competitivo** no mercado
-
----
-
-## **Resumo da Entrega**
-
-| Critério | Detalhe |
-|----------|---------|
-| **Problema** | Classificar risco de distúrbios do sono por hábitos |
-| **IA Utilizada** | MLP (Multi-Layer Perceptron) |
-| **Dados** | Dataset público - 374 amostras, 13 variáveis |
-| **Ferramenta** | Python + scikit-learn |
-| **Acurácia** | ~89% |
-| **Aplicação** | Recomendações preventivas personalizadas |
