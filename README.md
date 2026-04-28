@@ -24,8 +24,11 @@ A MLP **classifica o risco** (`Nenhum`, `Insônia`, `Apneia do Sono`) com base e
 - **Link do daraset**: https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset
 
 ### **Ferramenta**
-- **Python**
-- **scikit-learn (MLPClassifier)**
+- **Python** (3.10)
+- **scikit-learn** (MLPClassifier)
+- **Pandas** (Pre-process)
+- **MATPLOTLIB** (Vizualizações)
+- **Numpy** (Numéricos)
 
 ---
 
