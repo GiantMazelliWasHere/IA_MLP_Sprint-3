@@ -1,106 +1,137 @@
-Fazer tbm: Pilares essenciais incluem alimentação equilibrada, atividade física regular e relações sociais positivas.
-# Sprint 3 - MLP - H-bit
-## Medicina Preventiva por Hábitos
+# Sprint 3 — MLP aplicada à Medicina do Estilo de Vida
 
 ## Integrantes:
-- Edson Leonardo Pacheco Navia
-- Eduardo Mazelli
-- Lucas Masaki Nagahama
-- Joseh Gabriel Trimboli Agra
-- Pedro Henrique de Assumção Lima
+- **Edson Leonardo Pacheco Navia**
+- **Eduardo Mazelli**
+- **Lucas Masaki Nagahama**
+- **Joseh Gabriel Trimboli Agra**
+- **Pedro Henrique de Assumção Lima** 
+## Repositório: 
+https://github.com/GiantMazelliWasHere/IA_MLP_Sprint-3
 
 ---
 
-### **Problema**
-Os humanos possuem hábitos que aumentam o risco de distúrbios do sono (Insônia e Apneia), mas poucos recebem orientação preventiva personalizada.
+## Objetivo
+Utilizar uma **MLP (Multilayer Perceptron)** para resolver um problema dentro do projeto
+de Medicina do Estilo de Vida — classificar o **nível de obesidade/saúde** de um
+indivíduo a partir de dados de hábitos diários (alimentação, atividade física,
+hidratação, sono, uso de tecnologia, álcool, fumo e meio de transporte).
 
-### **O que a IA faz no projeto?**
-A MLP **classifica o risco** (`Nenhum`, `Insônia`, `Apneia do Sono`) com base em hábitos diários, permitindo ao app recomendar **mudanças preventivas personalizadas**.
+A Medicina do Estilo de Vida atua sobre **6 pilares**:
+1. **Alimentação** saudável (predominantemente vegetal)
+2. **Atividade física** regular
+3. **Sono** restaurador
+4. **Manejo do estresse**
+5. **Conexões sociais** saudáveis
+6. **Evitar substâncias de risco** (álcool, fumo, drogas)
 
-### **Dados**
-- **Dataset**: Health and Lifestyle Metrics (público)
-- **Amostras**: 374 indivíduos
-- **Features**: 13 variáveis (idade, sono, atividade física, estresse, IMC, etc.)
-- **Target**: Distúrbio do sono (3 classes)
-- **Link do daraset**: https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset
+Cada dataset fornecido cobre um ou mais pilares; este notebook centraliza o
+treino da MLP no **ObesityDataSet** (que reúne 4 dos 6 pilares) e referencia
+os demais como extensões futuras.
 
-### **Ferramenta**
-- **Python** (3.10)
-- **scikit-learn** (MLPClassifier)
-- **Pandas** (Pre-process)
-- **MATPLOTLIB** (Vizualizações)
-- **Numpy** (Numéricos)
+## Problema
 
----
+**O que a IA faz no projeto?**
 
-## **Arquitetura da Rede Neural**
+A IA aprende, a partir de variáveis de estilo de vida coletadas via
+questionário, a **predizer em qual das 7 categorias de status de peso**
+o indivíduo se encontra:
+`Insufficient_Weight`, `Normal_Weight`, `Overweight_Level_I/II`,
+`Obesity_Type_I/II/III`.
 
-Entrada (11 features de hábitos)
-|
-[Dense: 64 neurônios, ReLU]
-|
-[Dense: 32 neurônios, ReLU]
-|
-[Saída: 3 neurônios, Softmax]
-|
-Nenhum | Insônia | Apneia
+Esse classificador serve como **ferramenta de triagem** num app de
+Medicina do Estilo de Vida: ao receber as respostas do usuário sobre
+hábitos, sugere o pilar mais crítico a ser trabalhado e identifica
+perfis de risco antes mesmo de medir IMC.
 
+## Dados
 
-**Configurações:**
-- Otimizador: Adam
-- Learning Rate: 0.001 (adaptativo)
-- Regularização L2: 0.001
-- Early Stopping: ativado
-- Batch Size: 32
+### De onde vieram
+- **Dataset principal:** `ObesityDataSet_raw_and_data_sinthetic.csv`  
+  Originário de Palechor & Manotas (2019) — coleta real (México, Peru,
+  Colômbia) **balanceada por sobre-amostragem sintética via SMOTE**.
+  Disponível no UCI ML Repository.
 
----
+- **Datasets de apoio (mapeados aos pilares):**
+  | Pilar | Dataset | Link 
+  |---|---|
+  | Sono | `Sleep_health_and_lifestyle_dataset.csv` |
+  | Estresse | `StressLevelDataset.csv`, `Stress_Dataset.csv` |
+  | Conexões sociais | `self-reported-loneliness-older-adults.csv` |
+  | Substâncias de risco | `deaths-illicit-drugs.csv` |
+  | Nutrição + Atividade | `meal_metadata.csv`, `Final_data.csv` |
 
-## **Resultados**
+### Variáveis principais (ObesityDataSet)
+| Coluna | Significado | Pilar |
+|---|---|---|
+| FAVC | Consumo frequente de alimentos calóricos | Nutrição |
+| FCVC | Frequência de vegetais nas refeições | Nutrição |
+| NCP | Nº de refeições principais | Nutrição |
+| CAEC | Lanches entre refeições | Nutrição |
+| CH2O | Consumo diário de água (L) | Nutrição |
+| SCC | Monitora calorias? | Nutrição |
+| FAF | Frequência de atividade física | Atividade |
+| TUE | Tempo de tela / sedentarismo | Atividade |
+| MTRANS | Meio de transporte | Atividade |
+| SMOKE | Fumante? | Substâncias |
+| CALC | Consumo de álcool | Substâncias |
+| Gender, Age, Height, Weight | Demografia | Contexto |
+| family_history_with_overweight | Histórico familiar | Contexto |
+| **NObeyesdad** | **Alvo** (7 classes) | — |
 
-### Métricas de Performance
-- **Acurácia**: ~89%
-- **F1-Score Macro**: ~0.88
-- **Cross-Validation (5-fold)**: 87.2% ± 3.1%
+## Pré-processamento
 
-### Features Mais Importantes
-1. **Sleep Duration** - Duração do sono
-2. **Quality of Sleep** - Qualidade do sono
-3. **Stress Level** - Nível de estresse
-4. **Age** - Idade
-5. **Physical Activity Level** - Atividade física
+- **Categóricas → one-hot** (`pd.get_dummies`)
+- **Numéricas → z-score** (média 0, desvio 1)
+- **Split estratificado** 70 / 10 / 20 (treino / val / teste)
 
----
+## Modelo — MLP construída do zero (NumPy)
 
-## **Aplicação Prática**
+Optamos por implementar a MLP do zero (sem `sklearn` ou `tensorflow`)
+para deixar **explícitos** todos os mecanismos didáticos:
 
-### Exemplo de Predição
-**Usuário:** Homem, 35 anos, engenheiro
-- Sono: 6h/dia, qualidade 5/10
-- Estresse: 8/10
-- Atividade física: 30 min/dia
-- 4.000 passos/dia
+### Arquitetura
+```
+Entrada (31)  →  Linear(31, 64) + ReLU  →  Linear(64, 7) + Softmax
+```
 
-**Resultado:**
-- **Risco de Insônia**: 73.2%
-- **Sem distúrbio**: 21.5%
-- **Risco de Apneia**: 5.3%
+### Hiperparâmetros
+| Item | Valor |
+|---|---|
+| Camada oculta | 64 neurônios |
+| Ativação oculta | ReLU |
+| Saída | Softmax (7 classes) |
+| Função de perda | Cross-Entropy categórica |
+| Otimizador | SGD com momentum (0.9) |
+| Taxa de aprendizado | 0.05 |
+| Tamanho do mini-batch | 64 |
+| Épocas | 200 |
+| Inicialização | He (√(2/n_in)) |
 
-### Recomendações do App
-1. **Melhore a higiene do sono** (7-8h/noite)
-2. **Técnicas de relaxamento** (reduzir estresse)
-3. **Aumentar atividade física** (45-60 min/dia)
-4. **Monitoramento contínuo** via app
+### Ferramenta utilizada
+**Python 3 + NumPy + pandas + matplotlib** (pacotes científicos padrão).  
+O código pode ser facilmente substituído por `MLPClassifier` do
+`sklearn` ou por uma rede equivalente em Keras/PyTorch.
 
----
+## Discussão
 
-## **Impacto para o Negócio**
+### Pontos fortes
+- **Acurácia de teste: 95.67%** em 7 classes — excelente
+  para um modelo simples com apenas 1 camada oculta.
+- A classe **Obesity_Type_III** atinge 100% de F1 (todos os atributos do
+  questionário se correlacionam fortemente).
+- O treinamento converge cedo (~20 épocas) sem overfitting severo: a
+  acurácia de validação se mantém acima de 94%.
 
-### Para os Usuários
-- **Prevenção personalizada** antes dos sintomas
-- **Mudanças de hábitos orientadas por IA**
-- **Monitoramento contínuo** do progresso
+### Limitações
+- **Normal_Weight × Overweight_Level_I** apresentam o maior número de
+  confusões (fronteira biológica naturalmente fluida).
+- O dataset foi balanceado por SMOTE — em produção é prudente reavaliar
+  com dados reais não-sintéticos.
 
-### Para a Care Plus
-- **Engajamento** aumentado no app
-- **Valor agregado** com medicina preventiva
-- **Diferencial competitivo** no mercado
+### Conexão com a Medicina do Estilo de Vida
+Os atributos mais informativos para o modelo são justamente os pilares
+da Medicina do Estilo de Vida: **alimentação (FAVC, FCVC, CAEC),
+atividade física (FAF, MTRANS), hidratação (CH2O) e substâncias (CALC,
+SMOKE)** — confirmando que estilo de vida é um preditor robusto do
+status de peso.
