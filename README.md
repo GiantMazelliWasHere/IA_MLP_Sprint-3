@@ -1,3 +1,4 @@
+Fazer tbm: Pilares essenciais incluem alimentação equilibrada, atividade física regular, sono adequado e relações sociais positivas.
 # Sprint 3 - MLP - H-bit
 ## Medicina Preventiva por Hábitos
 
